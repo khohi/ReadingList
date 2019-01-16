@@ -2,6 +2,12 @@ language: swift
 cache:
   - bundler
 osx_image: xcode10.1
+env:
+  matrix:
+    - TEST_PLATFORM="platform=iOS Simulator,OS=10.3.1,name=iPhone 7"
+    - TEST_PLATFORM="platform=iOS Simulator,OS=11.4,name=iPhone 8"
+    - TEST_PLATFORM="platform=iOS Simulator,OS=12.1,name=iPhone XS"
+    - TEST_PLATFORM="platform=iOS Simulator,OS=12.1,name=iPad Pro (10.5-inch)"
 notifications:
   email:
     - feedback@readinglist.app
@@ -9,5 +15,5 @@ before_install:
   - ./build/before_install.sh
 script:
   - set -e
-  - if [[ ! $TRAVIS_COMMIT_MESSAGE =~ '[SKIP-TESTS]' ]]; then bundle exec fastlane test; fi
+  - xcodebuild -sdk iphonesimulator -destination "${TEST_PLATFORM}" -workspace ReadingList.xcworkspace -scheme ReadingList clean test | xcpretty
   - if [[ $TRAVIS_COMMIT_MESSAGE =~ '[DEPLOY]' ]]; then bundle exec fastlane deploy; fi
