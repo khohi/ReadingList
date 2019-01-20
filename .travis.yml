@@ -3,8 +3,7 @@ osx_image: xcode10.1
 git:
   # To enable build numbering from commit count
   depth: false
-before_cache:
- - brew cleanup
+before_cache: brew cleanup
 cache:
   bundler: true
   cocoapods: true
@@ -16,16 +15,18 @@ install:
   - mint run yonaskolb/xcodegen
   - pod repo update
   - pod install
-before_script:
-  - ./build/before_install.sh
-script:
-  - set -o pipefail && xcodebuild -workspace ReadingList.xcworkspace -scheme ReadingList \
-      -destination "platform=iOS Simulator,name=iPhone 7,OS=10.3.1" \
-      -destination "platform=iOS Simulator,name=iPhone XS,OS=12.1" \
-      -destination "platform=iOS Simulator,name=iPad Pro (10.5-inch),OS=11.4" \
-      clean test
-deploy:
-  provider: script
-  script: bundle exec fastlane deploy
-  on:
-    branch: master
+before_script: ./build/preprocess.sh
+jobs:
+  include:
+    - stage: test
+      script: fastlane scan --scheme "ReadingList" --device "iPhone 7 (iOS 10.3.1)"
+    - script: fastlane scan --scheme "ReadingList" --device "iPhone 8 (iOS 11.4)"
+    - script: fastlane scan --scheme "ReadingList" --device "iPhone XS (iOS 12.1)"
+    - script: fastlane scan --scheme "ReadingList" --device "iPad Pro (10.5-inch) (iOS 11.4)"
+
+    - stage: deploy
+      script: fastlane deploy
+stages:
+  - test
+  - name: deploy
+    if: branch = master
