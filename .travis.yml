@@ -10,6 +10,7 @@ cache:
   - cocoapods
   directories:
     - $HOME/Library/Caches/Homebrew
+    - /usr/local/lib/mint/
 before_install:
   - ./build/before_install.sh
 script:

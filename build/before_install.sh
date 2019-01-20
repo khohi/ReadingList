@@ -1,7 +1,5 @@
 #! /bin/bash
 
-bundle install > /dev/null
-
 # Configure Fabric (only if we have access to the variables)
 if [ "${TRAVIS_SECURE_ENV_VARS}" == "true" ]
 then
@@ -19,5 +17,4 @@ number_of_commits=$("$git" rev-list HEAD --count)
 brew install mint
 mint run yonaskolb/xcodegen
 
-pod repo update > /dev/null
 pod install
