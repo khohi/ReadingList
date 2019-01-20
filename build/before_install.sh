@@ -13,3 +13,6 @@ fi
 git=$(sh /etc/profile; which git)
 number_of_commits=$("$git" rev-list HEAD --count)
 /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $number_of_commits" "ReadingList/Info.plist"
+
+brew install mint
+mint run yonaskolb/xcodegen
