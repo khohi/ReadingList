@@ -16,3 +16,5 @@ number_of_commits=$("$git" rev-list HEAD --count)
 
 brew install mint
 mint run yonaskolb/xcodegen
+
+pod repo update
