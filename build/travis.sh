@@ -1,8 +1,6 @@
 #! /bin/bash
 set -e
 
-pod install
-
 xcodebuild \
 	-workspace ReadingList.xcworkspace \
 	-scheme ReadingList \

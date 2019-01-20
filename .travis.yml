@@ -3,12 +3,6 @@ osx_image: xcode10.1
 git:
   # To enable build numbering from commit count
   depth: false
-env:
-  matrix:
-    - TEST_SDK=platform=iOS Simulator,name=iPhone 7,OS=10.3.1
-    - TEST_SDK=platform=iOS Simulator,name=iPhone 8,OS=11.4
-    - TEST_SDK=platform=iOS Simulator,name=iPhone XS,OS=12.1
-    - TEST_SDK=platform=iOS Simulator,name=iPad Pro (10.5-inch),OS=11.4
 before_cache:
  - brew cleanup
 cache:
@@ -17,7 +11,32 @@ cache:
   directories:
     - $HOME/Library/Caches/Homebrew
     - /usr/local/lib/mint/
-before_install:
+env:
+  - TEST_SDK=platform=iOS Simulator,name=iPhone 7,OS=10.3.1
+  - TEST_SDK=platform=iOS Simulator,name=iPhone 8,OS=11.4
+  - TEST_SDK=platform=iOS Simulator,name=iPhone XS,OS=12.1
+  - TEST_SDK=platform=iOS Simulator,name=iPad Pro (10.5-inch),OS=11.4
+stages:
+  - compile
+  - test
+  - name: deploy
+    if: branch = master
+install:
+  - brew install mint
+  - mint run yonaskolb/xcodegen
+  - pod repo update
+  - pod install
+before_script:
   - ./build/before_install.sh
 script:
-  - ./build/travis.sh
+  - xcodebuild \
+      -workspace ReadingList.xcworkspace \
+      -scheme ReadingList \
+      -destination "${TEST_SDK}" \
+      clean test | xcpretty
+deploy:
+  - bundle exec fastlane deploy
+jobs:
+  include:
+    - stage: deploy
+      env: TEST_SDK=none
