@@ -1,7 +1,15 @@
 language: swift
+osx_image: xcode10.1
+git:
+  # To enable build numbering from commit count
+  depth: false
+before_cache:
+ - brew cleanup
 cache:
   - bundler
-osx_image: xcode10.1
+  - cocoapods
+  directories:
+    - $HOME/Library/Caches/Homebrew
 before_install:
   - ./build/before_install.sh
 script:
