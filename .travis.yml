@@ -16,11 +16,6 @@ env:
   - TEST_SDK=platform=iOS Simulator,name=iPhone 8,OS=11.4
   - TEST_SDK=platform=iOS Simulator,name=iPhone XS,OS=12.1
   - TEST_SDK=platform=iOS Simulator,name=iPad Pro (10.5-inch),OS=11.4
-stages:
-  - compile
-  - test
-  - name: deploy
-    if: branch = master
 install:
   - brew install mint
   - mint run yonaskolb/xcodegen
@@ -35,8 +30,7 @@ script:
       -destination "${TEST_SDK}" \
       clean test | xcpretty
 deploy:
-  - bundle exec fastlane deploy
-jobs:
-  include:
-    - stage: deploy
-      env: TEST_SDK=none
+  provider: script
+  script: bundle exec fastlane deploy
+  on:
+    branch: master
