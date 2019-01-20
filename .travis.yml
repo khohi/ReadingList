@@ -10,12 +10,7 @@ cache:
   directories:
     - $HOME/Library/Caches/Homebrew
     - /usr/local/lib/mint/
-install:
-  - bundle install
-  - brew install mint
-  - mint run yonaskolb/xcodegen
-  - pod repo update
-  - pod install
+install: ./build/install.sh
 before_script: ./build/preprocess.sh
 jobs:
   include:
@@ -23,7 +18,7 @@ jobs:
       script: fastlane scan --scheme "ReadingList" --device "iPhone 7 (iOS 10.3.1)"
     - script: fastlane scan --scheme "ReadingList" --device "iPhone 8 (iOS 11.4)"
     - script: fastlane scan --scheme "ReadingList" --device "iPhone XS (iOS 12.1)"
-    - script: fastlane scan --scheme "ReadingList" --device "iPad Pro (10.5-inch) (iOS 11.4)"
+    - script: fastlane scan --scheme "ReadingList" --device "iPad Air (iOS 11.4)"
 
     - stage: deploy
       script: fastlane deploy
