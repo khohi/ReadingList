@@ -6,8 +6,8 @@ git:
 before_cache:
  - brew cleanup
 cache:
-  - bundler
-  - cocoapods
+  bundler: true
+  cocoapods: true
   directories:
     - $HOME/Library/Caches/Homebrew
     - /usr/local/lib/mint/
