@@ -1,6 +1,7 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '10.3'
 use_frameworks!
+project 'ReadingList.xcodeproj'
 
 target 'ReadingList' do
   pod 'DZNEmptyDataSet', '~> 1.8'
