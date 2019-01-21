@@ -5,6 +5,6 @@ bundle install
 brew install mint
 mint run yonaskolb/xcodegen
 
-if ! pod install; then
-	pod install --repo-update
+if ! bundle exec pod install; then
+	bundle exec pod install --repo-update
 fi

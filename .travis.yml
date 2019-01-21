@@ -1,37 +1,23 @@
 language: swift
 osx_image: xcode10.1
-notifications:
-  pushover:
-    api_key: $PUSHOVER_API_KEY
-    users:
-      - $PUSHOVER_USER_KEY
+# To enable build numbering from commit count
 git:
-  # To enable build numbering from commit count
   depth: false
 before_cache: brew cleanup
 cache:
   bundler: true
   cocoapods: true
   directories:
-    - $HOME/Library/Caches/Homebrew
+    - $HOME/Library/Caches/Homebrew/
     - /usr/local/lib/mint/
 install: ./build/install.sh
 before_script: ./build/preprocess.sh
-jobs:
-  include:
-    - stage: precache
-      script: true
-
-    - stage: test
-      script: fastlane scan --scheme "ReadingList" -d 'platform=iOS Simulator,name=iPhone 7,OS=10.3.1'
-    - script: fastlane scan --scheme "ReadingList" -d 'platform=iOS Simulator,name=iPhone 8,OS=11.4'
-    - script: fastlane scan --scheme "ReadingList" -d 'platform=iOS Simulator,name=iPhone X,OS=12.1'
-    - script: fastlane scan --scheme "ReadingList" -d 'platform=iOS Simulator,name=iPad Pro (10.5-inch),OS=11.4'
-
-    - stage: deploy
-      script: fastlane deploy
-stages:
-  - precache
-  - test
-  - name: deploy
-    if: branch = master
+script:
+  - bundle exec fastlane test
+deploy:
+  #skip_cleanup: true
+  provider: script
+  script:
+    - bundle exec fastlane deploy
+  on:
+    branch: master
