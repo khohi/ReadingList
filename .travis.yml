@@ -1,5 +1,10 @@
 language: swift
 osx_image: xcode10.1
+notifications:
+  pushover:
+    api_key: $PUSHOVER_API_KEY
+    users:
+      - $PUSHOVER_USER_KEY
 git:
   # To enable build numbering from commit count
   depth: false
