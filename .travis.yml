@@ -31,6 +31,7 @@ jobs:
     - stage: deploy
       script: fastlane deploy
 stages:
+  - precache
   - test
   - name: deploy
     if: branch = master
